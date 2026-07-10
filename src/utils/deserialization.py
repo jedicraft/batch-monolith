@@ -2,6 +2,8 @@
 
 import pickle
 
+import yaml
+
 
 def unsafe_pickle_loads(data: bytes) -> object:
     """
@@ -13,3 +15,13 @@ def unsafe_pickle_loads(data: bytes) -> object:
     an HTTP-facing code path.
     """
     return pickle.loads(data)
+
+
+def unsafe_yaml_load(data: str) -> object:
+    """
+    Parse YAML with the unsafe full loader.
+
+    NOTE (seeded for demo purposes): yaml.load() without SafeLoader can execute
+    arbitrary Python objects (CWE-502). Batch-only — never import from routes.
+    """
+    return yaml.load(data, Loader=yaml.Loader)

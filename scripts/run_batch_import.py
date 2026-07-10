@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.utils.deserialization import unsafe_pickle_loads  # noqa: E402
+from src.utils.deserialization import unsafe_pickle_loads, unsafe_yaml_load  # noqa: E402
+from src.utils.reporting import build_status_filter_sql  # noqa: E402
 
 
 def process_incoming_batch(incoming_dir: Path) -> int:
@@ -25,6 +26,12 @@ def process_incoming_batch(incoming_dir: Path) -> int:
         record = unsafe_pickle_loads(payload)
         print(f"imported {pickle_path.name}: {record!r}")
         processed += 1
+    for yaml_path in sorted(incoming_dir.glob("*.yaml")):
+        document = unsafe_yaml_load(yaml_path.read_text(encoding="utf-8"))
+        print(f"imported {yaml_path.name}: {document!r}")
+        processed += 1
+    if processed:
+        print(f"export filter SQL template: {build_status_filter_sql('pending')}")
     return processed
 
 
