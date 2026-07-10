@@ -1,22 +1,18 @@
-# aperture-labs/batch-monolith
+# TheCakeIsALieInc/batch-monolith
 
-**Test Subject Repository #017** — Python/Flask monolith representing the
-"shared batch tier" of the Aperture Labs polyglot fleet.
+**Aperture Labs · Test Subject #017** — Python/Flask monolith in the batch tier of
+The Cake Is A Lie Inc.'s polyglot fleet.
 
 ## Seeded vulnerabilities (for demo purposes)
 
-All three helpers exist and are used by `scripts/run_batch_import.py` only.
-**None are reachable from Flask HTTP routes.**
+All three helpers are used by `scripts/run_batch_import.py` only — **not**
+reachable from Flask HTTP routes.
 
 | # | Class | Component | CWE |
 |---|-------|-----------|-----|
 | 1 | Unsafe pickle deserialization | `unsafe_pickle_loads()` | CWE-502 |
 | 2 | Unsafe YAML load | `unsafe_yaml_load()` | CWE-502 |
 | 3 | Dynamic SQL concatenation | `build_status_filter_sql()` | CWE-89 |
-
-- **HTTP surface**: JSON-only routes under `src/routes/` (`/health`, `/api/orders/*`).
-- **Evidence**: `tests/test_route_reachability.py`, `tests/test_batch_only_utils.py`,
-  `tests/test_batch_script.py`.
 
 Expected fleet-triage outcome: **report only, no PR** (for each alert).
 
